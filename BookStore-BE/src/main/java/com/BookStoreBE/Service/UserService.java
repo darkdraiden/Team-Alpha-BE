@@ -40,6 +40,7 @@ public class UserService {
             ApiResponse<User> resApi=new ApiResponse<User>(401,"Fail","Unauthorized",null);
             return resApi;
         }
+        //Select email
         userByEmail.get().setPassword("");
         ApiResponse<User> resApi=new ApiResponse<User>(200,"Success", "Logged In",userByEmail.get());
         return resApi;
