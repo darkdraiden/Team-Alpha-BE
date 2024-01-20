@@ -21,15 +21,23 @@ public class UserController {
     UserService userService;
 
     @PostMapping()
-    public void createUser(@RequestBody User user){
-        userService.createUser(user);
+    public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
+        ApiResponse<User> resultResponse=userService.createUser(user);
+
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse> getUserPassword(@RequestBody User userBody){
 
         ApiResponse<User> resultResponse=userService.getUser(userBody.getEmail(), userBody.getPassword());
-        return new ResponseEntity<>(resultResponse,HttpStatusCode.valueOf(resultResponse.getStatusCode()));
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
     }
 
 }
