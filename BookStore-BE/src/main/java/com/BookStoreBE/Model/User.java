@@ -11,7 +11,13 @@ public class User {
     @Id
     @GeneratedValue
     private int id;
+    private String name;
+    private String email;
+    private String phone;
+    private String password;
 
+    public User() {
+    }
     public User(String name, String email, String phone, String password) {
         this.name = name;
         this.email = email;
@@ -26,8 +32,6 @@ public class User {
         this.id = id;
     }
 
-    public User() {
-    }
 
     public int getId() {
         return id;
@@ -68,9 +72,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private String name;
-    private String email;
-    private String phone;
-    private String password;
 }
