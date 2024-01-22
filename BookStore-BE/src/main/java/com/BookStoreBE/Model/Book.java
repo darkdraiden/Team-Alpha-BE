@@ -1,6 +1,7 @@
 package com.BookStoreBE.Model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 
@@ -32,6 +33,7 @@ public class Book {
     }
 
     @Id
+    @GeneratedValue
     private Integer bookId;
     private String title;
     private String author;
