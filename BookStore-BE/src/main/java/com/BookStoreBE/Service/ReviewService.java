@@ -101,5 +101,57 @@ public class ReviewService {
         );
     }
 
+    public ApiResponse<Review> deleteReview(Integer reviewId){
+        if(!reviewRepository.findById(reviewId).isPresent()){
+            return new ApiResponse<Review>(
+                    404,
+                    "fail",
+                    "review not found!",
+                    null
+            );
+        }
+        reviewRepository.deleteById(reviewId);
+
+        return new ApiResponse<Review>(
+                204,
+                "success",
+                "review deleted!",
+                null
+        );
+    }
+
+    public ApiResponse<Review> updateReview(Review updatedReview){
+        if(updatedReview.getRating()> 5.0){
+            return new ApiResponse<Review>(
+                    400,
+                    "fail",
+                    "Rating must be less than 5, provided "+updatedReview.getRating(),
+                    null
+            );
+        }
+
+        Integer rowsUpdated = reviewRepository.updateReview(
+                updatedReview.getReviewId(),
+                updatedReview.getComment(),
+                updatedReview.getRating()
+        );
+
+        if(rowsUpdated == 0){
+            return new ApiResponse<Review>(
+                    404,
+                    "fail",
+                    "Review not found!",
+                    null
+            );
+        }
+
+        return new ApiResponse<Review>(
+                200,
+                "success",
+                "review updated",
+                null
+        );
+    }
+
 
 }

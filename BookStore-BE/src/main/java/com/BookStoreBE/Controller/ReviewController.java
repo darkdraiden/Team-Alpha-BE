@@ -36,4 +36,19 @@ public class ReviewController {
         return new ResponseEntity<>(res, HttpStatusCode.valueOf(res.getStatusCode()));
     }
 
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<ApiResponse<Review>> deleteReview(@PathVariable Integer reviewId){
+        // need to pass userId as well that we need to get from JWT
+        ApiResponse<Review> res=reviewService.deleteReview(reviewId);
+
+        return new ResponseEntity<>(res, HttpStatusCode.valueOf(res.getStatusCode()));
+    }
+
+    @PutMapping
+    public ResponseEntity<ApiResponse<Review>> updateReview(@RequestBody Review review){
+        ApiResponse<Review> res=reviewService.updateReview(review);
+
+        return new ResponseEntity<>(res,HttpStatusCode.valueOf(res.getStatusCode()));
+    }
+
 }
