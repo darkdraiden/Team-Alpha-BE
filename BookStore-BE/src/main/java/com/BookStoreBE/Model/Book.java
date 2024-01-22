@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Book {
-    enum GENRE{
+    private enum GENRE{
         FICTION,
         ROMANCE,
         NARRATIVE,
@@ -20,14 +20,14 @@ public class Book {
         HISTORY,
         ADVENTURE
     }
-    enum LANG{
+    private enum LANG{
         ENGLISH,
         HINDI,
         SPANISH,
         LATIN,
         FRENCH
     }
-    enum BINDING{
+    private enum BINDING{
         HARD,
         SOFT
     }
