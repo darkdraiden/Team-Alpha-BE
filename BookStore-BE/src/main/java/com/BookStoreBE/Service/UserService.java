@@ -57,11 +57,7 @@ public class UserService {
             ApiResponse<User> resApi=new ApiResponse<User>(401,"fail","Unauthorized",null);
             return resApi;
         }
-<<<<<<< HEAD
-        //Select email
-=======
         // set password field to ""
->>>>>>> d46f1d9de1cdd85ce0488cdad1a954687381e89d
         userByEmail.get().setPassword("");
 
         // return ApiResponse to controller
