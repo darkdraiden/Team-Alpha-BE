@@ -113,8 +113,9 @@ public class UserService {
                     "NA"
             );
         }
-        updatedUser.get().setName(name);
-        if(!name.equals(updatedUser.get().getName())){
+        Integer updatedRows= userRepository.modifyName(name,email);
+
+        if(updatedRows==0){
             return new ApiResponse<String>(
                     500,
                     "fail",
@@ -122,19 +123,11 @@ public class UserService {
                     "NA"
             );
         }
-        userRepository.deleteById(updatedUser.get().getId());
-        User newUser=new User();
-        newUser.setName(updatedUser.get().getName());
-        newUser.setId(updatedUser.get().getId());
-        newUser.setPhone(updatedUser.get().getPhone());
-        newUser.setEmail(updatedUser.get().getEmail());
-        newUser.setPassword(updatedUser.get().getPassword());
-        userRepository.save(newUser);
         return new ApiResponse<String>(
                 200,
                 "success",
                 "Updated Account",
-                newUser.getName()
+                name
         );
     }
 
