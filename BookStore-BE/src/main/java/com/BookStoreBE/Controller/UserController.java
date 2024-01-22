@@ -40,4 +40,22 @@ public class UserController {
         );
     }
 
+    @DeleteMapping
+    public ResponseEntity<ApiResponse> deleteUser(@RequestBody User userBody){
+        ApiResponse<String> resultResponse=userService.deleteUser(userBody.getEmail(), userBody.getPassword());
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
+    }
+
+    @PutMapping
+    public ResponseEntity<ApiResponse> updateUser(@RequestBody User userBody){
+        ApiResponse<String> resultResponse=userService.updateUser(userBody.getName(),userBody.getEmail());
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
+    }
+
 }
