@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,6 +17,8 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public ApiResponse<User> createUser(User user){
         // get user by email if exist
@@ -30,6 +33,13 @@ public class UserService {
                     null
             );
         }
+
+        // encrypt password
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+
+        user.setPassword(encodedPassword);
+
+        userRepository.save(user);
 
         // user signed up successfully
         return new ApiResponse<User>(
@@ -53,9 +63,12 @@ public class UserService {
                     null
             );
         }
-
+        User currUser=userByEmail.get();
         // check if password is correct
-        if(!password.equals(userByEmail.get().getPassword())){
+
+        String encodePassword=currUser.getPassword();
+
+        if(!bCryptPasswordEncoder.matches(password,encodePassword)){
             return new ApiResponse<User>(
                     401,
                     "fail",
@@ -64,14 +77,14 @@ public class UserService {
             );
         }
         // set password field to ""
-        userByEmail.get().setPassword("");
+        currUser.setPassword("");
 
         // return ApiResponse to controller
         return new ApiResponse<User>(
                 200,
                 "success",
                 "Logged In",
-                userByEmail.get()
+                currUser
             );
         }
 
@@ -85,20 +98,23 @@ public class UserService {
                     "NA"
             );
         }
-        if(!password.equals(delUser.get().getPassword())){
+        User currUser = delUser.get();
+        String encodePassword=currUser.getPassword();
+
+        if(!bCryptPasswordEncoder.matches(password,encodePassword)){
             return new ApiResponse<String>(
                     401,
                     "fail",
                     "Unauthorized",
-                    "NA"
+                    null
             );
         }
-        userRepository.deleteById(delUser.get().getId());
+        userRepository.deleteById(currUser.getId());
         return new ApiResponse<String>(
                 200,
                 "success",
                 "Deleted Account",
-                delUser.get().getName()
+                currUser.getName()
         );
     }
 
