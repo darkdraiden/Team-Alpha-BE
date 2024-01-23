@@ -128,6 +128,7 @@ public class UserService {
                     "Record not found",
                     "NA"
             );
+
         }
         Integer updatedRows= userRepository.modifyName(name,email);
 
