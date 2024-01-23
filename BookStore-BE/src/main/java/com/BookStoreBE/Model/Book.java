@@ -1,5 +1,8 @@
 package com.BookStoreBE.Model;
 
+import com.BookStoreBE.utilityClasses.BINDING;
+import com.BookStoreBE.utilityClasses.GENRE;
+import com.BookStoreBE.utilityClasses.LANG;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -7,30 +10,6 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Book {
-    private enum GENRE{
-        FICTION,
-        ROMANCE,
-        NARRATIVE,
-        THRILLER,
-        SCI_FI,
-        MYSTERY,
-        FANATASY,
-        BIOGRAPHY,
-        HORROR,
-        HISTORY,
-        ADVENTURE
-    }
-    private enum LANG{
-        ENGLISH,
-        HINDI,
-        SPANISH,
-        LATIN,
-        FRENCH
-    }
-    private enum BINDING{
-        HARD,
-        SOFT
-    }
 
     @Id
     @GeneratedValue
@@ -38,7 +17,7 @@ public class Book {
     private String title;
     private String author;
     private String publication;
-    private  GENRE genre;
+    private GENRE genre;
     private String description;
     private LANG language;
     private BINDING binding;
