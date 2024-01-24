@@ -36,7 +36,9 @@ public class OrderController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<List<OrderResponse>>> getOrderHistory(@PathVariable Integer userId){
+        ApiResponse<List<OrderResponse>> res= orderService.getOrderHistory(userId);
 
+        return new ResponseEntity<>(res, HttpStatusCode.valueOf(res.getStatusCode()));
     }
 
 }
