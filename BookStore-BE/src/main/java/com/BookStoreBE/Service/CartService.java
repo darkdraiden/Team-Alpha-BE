@@ -21,56 +21,72 @@ public class CartService {
     @Autowired
     BookRepository bookRepository;
 
-    public ApiResponse<String> createCartItem(CartItems cartItem){
-        Optional<CartItems> newItem=cartRepository.findById(cartItem.getCartItemId());
-
-        if(newItem.isPresent()){
-            //cartRepository.increaseCount(cartItem.getCartItemId(),cartItem.getQuantity()+1);
+    public ApiResponse<CartItems> createCartItem(CartItems cartItem){
+        String finalResponse;
+        if(cartItem.getCartItemId()==null){
+            cartRepository.save(cartItem);
+            finalResponse="Item created in the cart";
+            return new ApiResponse<CartItems>(
+                    201,
+                    "success",
+                    finalResponse,
+                    cartItem
+            );
+        }
+        else{
+            Optional<CartItems> newItem=cartRepository.findById(cartItem.getCartItemId());
             CartItems currItem=newItem.get();
             currItem.setQuantity(cartItem.getQuantity()+1);
             cartRepository.save(currItem);
+            finalResponse="Item added to cart";
+            return new ApiResponse<CartItems>(
+                    201,
+                    "success",
+                    finalResponse,
+                    currItem
+            );
         }
-        else{
 
-            cartRepository.save(cartItem);
-        }
 
-        return new ApiResponse<String>(
-                201,
-                "success",
-                "Item added to cart",
-                //bookRepository.getById(cartItem.getBookId()).getTitle()     // to be integrated with bookrep
-                "book"
-        );
 
     }
 
-    public ApiResponse<String> deleteCartItem(Integer cartId){
-        Optional<CartItems> toBeDeleted= cartRepository.findById(cartId);
+    public ApiResponse<CartItems> deleteCartItem(CartItems cartItems){
+        Optional<CartItems> toBeDeleted= cartRepository.findById(cartItems.getCartItemId());
         if(toBeDeleted.isEmpty()){
-            return new ApiResponse<String>(
+            return new ApiResponse<CartItems>(
                     404,
                     "fail",
                     "Item not found",
                     null
             );
         }
-        String name="demoBook";
-        //String name=bookRepository.findById(toBeDeleted.get().getBookId()).get().getTitle();
-        int newQuant=toBeDeleted.get().getQuantity();
-        if(newQuant==1){
-            cartRepository.deleteById(cartId);
+        String finalResponse;
+        int currQuant=toBeDeleted.get().getQuantity();
+        if(currQuant==1){
+            cartRepository.deleteById(cartItems.getCartItemId());
+            finalResponse="Item no more in the cart";
+            return new ApiResponse<CartItems>(
+                    200,
+                    "success",
+                    finalResponse,
+                    null
+            );
+
         }
         else{
-            cartRepository.decreaseCount(cartId,newQuant-1);
+            cartItems.setQuantity(cartItems.getQuantity()-1);
+            cartRepository.save(cartItems);
+            finalResponse="Item removed from the cart";
+
         }
 
 
-        return new ApiResponse<String>(
+        return new ApiResponse<CartItems>(
                 200,
                 "success",
-                "Item deleted from cart",
-                name
+                finalResponse,
+                cartItems
         );
     }
 

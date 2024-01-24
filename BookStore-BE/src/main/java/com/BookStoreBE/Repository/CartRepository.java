@@ -16,15 +16,4 @@ public interface CartRepository extends JpaRepository<CartItems,Integer> {
     @Query(value = "select c from CartItems c where c.userId=:id ")
     List<CartItems> findCartItemsByIdCustom(@Param("id") Integer id);
 
-    @Transactional
-    @Modifying
-    @Query("update CartItems set quantity=:q where cartItemId=:id")
-    Integer decreaseCount(@Param("id") Integer cartId,@Param("q") Integer quant);
-
-    @Transactional
-    @Modifying
-    @Query("update CartItems set quantity=:q where cartItemId=:id")
-    Integer increaseCount(@Param("id") Integer cartId,@Param("q") Integer quant);
-
-
 }

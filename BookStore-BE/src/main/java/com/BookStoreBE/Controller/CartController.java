@@ -19,9 +19,11 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @PostMapping
+    // Creates cart item if not present already(id==null)
+    // Increments its qty if already present(id!=null)
+    @PostMapping(path="/create")
     public ResponseEntity<ApiResponse> createItem(@RequestBody CartItems cartItem){
-        ApiResponse<String> resultResponse=cartService.createCartItem(cartItem);
+        ApiResponse<CartItems> resultResponse=cartService.createCartItem(cartItem);
 
         return new ResponseEntity<>(
                 resultResponse,
@@ -29,17 +31,19 @@ public class CartController {
         );
     }
 
-    @DeleteMapping
+    // Decrements qty if qty >1
+    // Removes cartItem from db if qty==1
+    @PostMapping(path="/remove")
     public ResponseEntity<ApiResponse> deleteItem(@RequestBody CartItems cartItem){
-        ApiResponse<String> resultResponse=cartService.deleteCartItem(cartItem.getCartItemId());
+        ApiResponse<CartItems> resultResponse=cartService.deleteCartItem(cartItem);
 
         return new ResponseEntity<>(
                 resultResponse,
                 HttpStatusCode.valueOf(resultResponse.getStatusCode())
         );
-
     }
 
+    // Returns list of all cartItems for a specific user given by {userId}
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse> getItems(@PathVariable Integer userId){
         ApiResponse<List<CartItems>> resultResponse=cartService.getCartItems(userId);
