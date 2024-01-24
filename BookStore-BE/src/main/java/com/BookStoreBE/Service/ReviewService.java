@@ -148,8 +148,7 @@ public class ReviewService {
 
         Integer rowsUpdated = reviewRepository.updateReview(
                 updatedReview.getReviewId(),
-                updatedReview.getComment(),
-                updatedReview.getRating()
+                updatedReview.getComment()
         );
 
         if(rowsUpdated == 0){

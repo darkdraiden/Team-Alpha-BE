@@ -15,6 +15,6 @@ public interface ReviewRepository extends JpaRepository<Review,Integer> {
 
     @Transactional
     @Modifying
-    @Query("update Review set comment=:c,rating=:r where reviewId=:id")
-    Integer updateReview(@Param("id") Integer reviewId,@Param("c") String comment, @Param("r") float rating);
+    @Query("update Review set comment=:c where reviewId=:id")
+    Integer updateReview(@Param("id") Integer reviewId,@Param("c") String comment);
 }
