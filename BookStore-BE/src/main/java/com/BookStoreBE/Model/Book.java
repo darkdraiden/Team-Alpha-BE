@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
 
 @Entity
 public class Book {
@@ -26,6 +29,14 @@ public class Book {
     private Integer qtyAvail;
     private Integer qtySold;
     private Integer pages;
+
+    private float rating;
+    private Integer reviewCnt;
+
+    private Timestamp createdAt;
+
+    public Book() {
+    }
 
     public Integer getBookId() {
         return bookId;
@@ -129,5 +140,28 @@ public class Book {
 
     public void setPages(Integer pages) {
         this.pages = pages;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public Integer getReviewCnt() {
+        return reviewCnt;
+    }
+
+    public void setReviewCnt(Integer reviewCnt) {
+        this.reviewCnt = reviewCnt;
+    }
+
+    public Timestamp getCreatedAt(){
+        return this.createdAt;
+    }
+    public void setCreatedAt(Timestamp timestamp){
+        this.createdAt=timestamp;
     }
 }

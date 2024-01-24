@@ -14,18 +14,22 @@ import java.util.Optional;
 public interface BookRepository  extends JpaRepository<Book,Integer> {
 
 
-    @Modifying
-    @Query("SELECT b FROM Book b ORDER BY b.qtySold DESC LIMIT :limit")
+
+    @Query("SELECT b FROM Book b ORDER BY b.qtySold DESC,b.rating DESC LIMIT :limit")
     List<Book> findTopSellingBooksWithLimit(@Param("limit") Integer limit);
 
 
-    @Modifying
+
     @Query("SELECT b FROM Book b WHERE b.genre=:genre ORDER BY b.qtySold DESC LIMIT :limit")
     List<Book> findAllByGenre(@Param("genre") GENRE genre, @Param("limit") Integer limit);
 
-    @Modifying
-    @Query("SELECT b FROM Book b ORDER BY b.discount DESC LIMIT :limit")
+
+    @Query("SELECT b FROM Book b ORDER BY b.discount DESC,b.qtySold DESC LIMIT :limit")
     List<Book> findBooksWithMostDiscount(@Param("limit") Integer limit);
 
+    @Query("SELECT b FROM Book b ORDER BY b.rating DESC,b.qtySold DESC LIMIT :limit")
+    List<Book> findTopRatedBooks(@Param("limit") Integer limit);
 
+    @Query("SELECT b FROM Book b ORDER BY b.createdAt DESC,b.qtySold DESC LIMIT :limit")
+    List<Book> findNewArrivals(@Param("limit") Integer limit);
 }

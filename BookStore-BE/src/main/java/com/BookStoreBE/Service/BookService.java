@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +70,34 @@ public class BookService {
         );
     }
 
+    public  ApiResponse<List<Book>> getTopRatedBooks(int limit){
+
+        List<Book> allBooks = bookRepository.findTopRatedBooks(limit);
+
+        return new ApiResponse<List<Book>>(
+                200,
+                "success",
+                "top rated Books fetched successfully",
+                allBooks
+        );
+    }
+
+    public  ApiResponse<List<Book>> getNewArrivalsBooks(int limit){
+
+        List<Book> allBooks = bookRepository.findNewArrivals(limit);
+
+        return new ApiResponse<List<Book>>(
+                200,
+                "success",
+                "Newly arrived Books fetched successfully",
+                allBooks
+        );
+    }
     public void addBook(Book book){
-        System.out.println(book.toString());
+
+        book.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        book.setReviewCnt(0);
+        book.setRating(0);
         bookRepository.save(book);
     }
 

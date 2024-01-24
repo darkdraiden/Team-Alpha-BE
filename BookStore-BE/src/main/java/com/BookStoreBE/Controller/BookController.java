@@ -58,11 +58,30 @@ public class BookController {
         return new ResponseEntity<>(allBooks, HttpStatusCode.valueOf(allBooks.getStatusCode()));
     }
 
+    @GetMapping("/top-rated")
+    public ResponseEntity<ApiResponse<List<Book>>> getTopRatedBooks(
+            @RequestParam(name="limit",required = false,defaultValue = "100") int limit
+    ){
+        // get all books
+        ApiResponse<List<Book>> allBooks=bookService.getTopRatedBooks(limit);
+
+        return new ResponseEntity<>(allBooks, HttpStatusCode.valueOf(allBooks.getStatusCode()));
+    }
+
+    @GetMapping("/new-arrivals")
+    public ResponseEntity<ApiResponse<List<Book>>> getNewArrivalsBooks(
+            @RequestParam(name="limit",required = false,defaultValue = "100") int limit
+    ){
+        // get all books
+        ApiResponse<List<Book>> allBooks=bookService.getNewArrivalsBooks(limit);
+
+        return new ResponseEntity<>(allBooks, HttpStatusCode.valueOf(allBooks.getStatusCode()));
+    }
+
 
     // will add Autherization later so only admin can add book
     @PostMapping
     public void addBook(@RequestBody Book book){
-
         bookService.addBook(book);
     }
 }

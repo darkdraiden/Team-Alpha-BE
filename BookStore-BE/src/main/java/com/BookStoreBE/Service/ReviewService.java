@@ -68,12 +68,12 @@ public class ReviewService {
         }
 
         // get the book on which user is trying to post review
-        Optional<Book> currBook=bookRepository.findById(bookId);
+        Optional<Book> opBook=bookRepository.findById(bookId);
 
         // if book not found, return 400
-        if(!currBook.isPresent()){
+        if(!opBook.isPresent()){
             return new ApiResponse<Review>(
-                    400,
+                    404,
                     "fail",
                     "book not found with id: "+bookId,
                     null
@@ -88,6 +88,22 @@ public class ReviewService {
                     null
             );
         }
+
+        // get books
+        Book currBook=opBook.get();
+
+        // calculate new rating
+        float prevRating=currBook.getRating();
+        int prevCnt=currBook.getReviewCnt();
+
+        float currRating=review.getRating();
+
+        float newRating=(float) ((prevRating*prevCnt)+currRating)/(float)(prevCnt+1);
+
+        // set new rating and review cnt
+        currBook.setRating(newRating);
+        currBook.setReviewCnt(prevCnt+1);
+        bookRepository.save(currBook);
 
         review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         // at last post review
