@@ -90,4 +90,16 @@ public class OrderService {
         );
     }
 
+    public ApiResponse<String> cancelOrder(Integer orderDetailId){
+        orderDetailRepository.deleteById(orderDetailId);
+        orderItemRepository.deleteByOrderDetailId(orderDetailId);
+
+        return new ApiResponse<String>(
+                200,
+                "success",
+                "order cancelled successfully",
+                null
+        );
+    }
+
 }
