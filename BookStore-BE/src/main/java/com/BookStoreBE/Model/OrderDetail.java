@@ -17,6 +17,15 @@ public class OrderDetail {
     private Float amount;
     private String address;
     private Timestamp createdAt;
+    private String paymentMode;
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
+    }
+
 
     public OrderDetail() {
     }

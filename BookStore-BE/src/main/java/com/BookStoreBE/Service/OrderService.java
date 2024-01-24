@@ -31,6 +31,7 @@ public class OrderService {
         List<Integer> cartItemIds = orderRequest.getCartItemIds();
         String address = orderRequest.getAddress();
         Integer userId = orderRequest.getUserId();
+        String paymentMode = orderRequest.getPaymentMode();
 
         if(cartItemIds.size()==0){
             return new ApiResponse<String>(
@@ -45,6 +46,7 @@ public class OrderService {
         orderDetail.setUserId(userId);
         orderDetail.setAmount(amount);
         orderDetail.setAddress(address);
+        orderDetail.setPaymentMode(paymentMode);
         orderDetail.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
         orderDetail=orderDetailRepository.save(orderDetail);

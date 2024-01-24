@@ -19,4 +19,6 @@ public class OrderRequest {
     private String address;
 
     private Integer userId;
+
+    private String paymentMode;
 }
