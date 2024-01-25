@@ -17,4 +17,8 @@ public class OrderRequest {
     private float totalAmount;
     private List<Integer> cartItemIds;
     private String address;
+
+    private Integer userId;
+
+    private String paymentMode;
 }
