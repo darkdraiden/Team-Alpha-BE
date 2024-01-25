@@ -27,6 +27,13 @@ public class BookController {
         return new ResponseEntity<>(allBooks, HttpStatusCode.valueOf(allBooks.getStatusCode()));
     }
 
+    @GetMapping("/{bookId}")
+    public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable Integer bookId){
+        ApiResponse<Book> res=bookService.getBookById(bookId);
+
+        return new ResponseEntity<>(res, HttpStatusCode.valueOf(res.getStatusCode()));
+    }
+
     @GetMapping("/top-selling")
     public ResponseEntity<ApiResponse<List<Book>>> getTopSellingBooks(
             @RequestParam(name="limit",required = false,defaultValue = "100") int limit
