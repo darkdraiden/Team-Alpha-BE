@@ -14,11 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("http://localhost:4200")
 @RequestMapping(path = "api/v1/user")
 public class UserController {
 
     @Autowired
     UserService userService;
+
 
     @PostMapping()
     public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
@@ -30,7 +32,8 @@ public class UserController {
         );
     }
 
-    @GetMapping
+
+    @PostMapping(path = "/login")
     public ResponseEntity<ApiResponse> getUserPassword(@RequestBody User userBody){
 
         ApiResponse<User> resultResponse=userService.getUser(userBody.getEmail(), userBody.getPassword());
