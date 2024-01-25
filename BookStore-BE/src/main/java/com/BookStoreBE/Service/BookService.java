@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -30,6 +31,27 @@ public class BookService {
                 "success",
                 "Books fetched successfully.",
                 allBook
+        );
+    }
+
+    public ApiResponse<Book> getBookById(Integer bookId){
+
+        Optional<Book> opBook = bookRepository.findById(bookId);
+
+        if(opBook.isEmpty()){
+            return new ApiResponse<Book>(
+                    404,
+                    "fail",
+                    "Book not found!",
+                    null
+            );
+        }
+
+        return new ApiResponse<Book>(
+                200,
+                "success",
+                "Book fetched successfully.",
+                opBook.get()
         );
     }
 
