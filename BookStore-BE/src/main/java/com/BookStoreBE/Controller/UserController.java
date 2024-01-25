@@ -34,7 +34,7 @@ public class UserController {
 
 
     @PostMapping(path = "/login")
-    public ResponseEntity<ApiResponse> getUserPassword(@RequestBody User userBody){
+    public ResponseEntity<ApiResponse> login(@RequestBody User userBody){
 
         ApiResponse<User> resultResponse=userService.getUser(userBody.getEmail(), userBody.getPassword());
         return new ResponseEntity<>(
