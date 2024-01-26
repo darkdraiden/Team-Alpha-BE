@@ -66,6 +66,7 @@ public class UserService {
         User currUser=userByEmail.get();
         // check if password is correct
 
+
         String encodePassword=currUser.getPassword();
 
         if(!bCryptPasswordEncoder.matches(password,encodePassword)){

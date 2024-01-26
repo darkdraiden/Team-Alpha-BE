@@ -52,4 +52,25 @@ public class CartController {
                 HttpStatusCode.valueOf(resultResponse.getStatusCode())
         );
     }
+
+    //Removes a cart item completely
+    @DeleteMapping("remove/{cartItemId}")
+    public ResponseEntity<ApiResponse<String>> removeItem(@PathVariable Integer cartItemId){
+        ApiResponse<String> resultResponse=cartService.removeCartItem(cartItemId);
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
+    }
+
+
+    //Clear the cart items
+    @DeleteMapping("clear/{userId}")
+    public ResponseEntity<ApiResponse<String>> clearCart(@PathVariable Integer userId){
+        ApiResponse<String> resultResponse=cartService.clearUserCart(userId);
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
+    }
 }
