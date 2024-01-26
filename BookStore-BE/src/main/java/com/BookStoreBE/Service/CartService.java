@@ -103,4 +103,47 @@ public class CartService {
         );
 
     }
+
+
+    public ApiResponse<String> removeCartItem(Integer cartItemId){
+        Optional<CartItems> currItem=cartRepository.findById(cartItemId);
+
+        if(currItem.isEmpty()) {
+            return new ApiResponse<String>(
+                    404,
+                    "fail",
+                    "Item not found",
+                    null
+            );
+        }
+
+        cartRepository.deleteById(cartItemId);
+        return new ApiResponse<String>(
+                200,
+                "success",
+                "Cart Item Deleted Successfully",
+                "Deleted"
+        );
+
+    }
+
+    public ApiResponse<String> clearUserCart(Integer userId){
+        Integer rowsAffected=cartRepository.clearCartByUserId(userId);
+
+        if(rowsAffected==0){
+            return new ApiResponse<String>(
+                    200,
+                    "success",
+                    "Cart Already Empty",
+                    null
+            );
+        }
+
+        return new ApiResponse<String>(
+                200,
+                "success",
+                "Cart Cleared Successfully",
+                "Cleared"
+        );
+    }
 }
