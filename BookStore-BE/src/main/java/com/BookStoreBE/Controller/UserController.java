@@ -2,12 +2,14 @@ package com.BookStoreBE.Controller;
 
 
 import com.BookStoreBE.Model.User;
+import com.BookStoreBE.Security.JwtHelper;
 import com.BookStoreBE.Service.UserService;
 import com.BookStoreBE.utilityClasses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    JwtHelper jwtHelper;
 
     @PostMapping()
     public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
@@ -34,11 +38,14 @@ public class UserController {
 
 
     @PostMapping(path = "/login")
-    public ResponseEntity<ApiResponse> login(@RequestBody User userBody){
+    public ResponseEntity<String> login(@RequestBody User userBody){
 
         ApiResponse<User> resultResponse=userService.getUser(userBody.getEmail(), userBody.getPassword());
+
+        String token = jwtHelper.generateToken(resultResponse.getData());
+
         return new ResponseEntity<>(
-                resultResponse,
+                "token",
                 HttpStatusCode.valueOf(resultResponse.getStatusCode())
         );
     }
