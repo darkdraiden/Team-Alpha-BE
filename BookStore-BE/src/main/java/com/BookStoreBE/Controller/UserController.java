@@ -5,6 +5,7 @@ import com.BookStoreBE.Model.User;
 import com.BookStoreBE.Security.JwtHelper;
 import com.BookStoreBE.Service.UserService;
 import com.BookStoreBE.utilityClasses.ApiResponse;
+import com.BookStoreBE.utilityClasses.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -26,7 +27,7 @@ public class UserController {
     @Autowired
     JwtHelper jwtHelper;
 
-    @PostMapping()
+    @PostMapping(path = "/signup")
     public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
         ApiResponse<User> resultResponse=userService.createUser(user);
 
@@ -38,14 +39,14 @@ public class UserController {
 
 
     @PostMapping(path = "/login")
-    public ResponseEntity<String> login(@RequestBody User userBody){
+    public ResponseEntity<JwtResponse> login(@RequestBody User userBody){
 
         ApiResponse<User> resultResponse=userService.getUser(userBody.getEmail(), userBody.getPassword());
 
         String token = jwtHelper.generateToken(resultResponse.getData());
 
         return new ResponseEntity<>(
-                "token",
+                new JwtResponse(token),
                 HttpStatusCode.valueOf(resultResponse.getStatusCode())
         );
     }
