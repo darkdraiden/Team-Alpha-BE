@@ -1,7 +1,7 @@
 package com.BookStoreBE.Service;
 
 import com.BookStoreBE.Model.CartItems;
-import com.BookStoreBE.Model.Book;
+import com.BookStoreBE.Model.User;
 import com.BookStoreBE.Repository.BookRepository;
 import com.BookStoreBE.Repository.CartRepository;
 import com.BookStoreBE.utilityClasses.ApiResponse;
@@ -24,11 +24,6 @@ public class CartService {
     public ApiResponse<CartItems> createCartItem(CartItems cartItem){
         String finalResponse;
         if(cartItem.getCartItemId()==null){
-
-            Optional<Book> opBook=bookRepository.findById(cartItem.getBookId());
-            Float price=opBook.get().getMrp()*(100-opBook.get().getDiscount())/100;
-            cartItem.setPrice(price);
-            cartItem.setBookName(opBook.get().getTitle());
             cartRepository.save(cartItem);
             finalResponse="Item created in the cart";
             return new ApiResponse<CartItems>(
@@ -95,11 +90,9 @@ public class CartService {
         );
     }
 
-    public ApiResponse<List<CartItems>> getCartItems(Integer userId){
+    public ApiResponse<List<CartItems>> getCartItems(Integer cartId){
         //List<CartItems> allItems= new ArrayList<>();
-        List<CartItems> allItems= cartRepository.findCartItemsByIdCustom(userId);
-
-
+        List<CartItems> allItems= cartRepository.findCartItemsByIdCustom(cartId);
 
         return new ApiResponse<List<CartItems>>(
                 200,
@@ -109,48 +102,5 @@ public class CartService {
 
         );
 
-    }
-
-
-    public ApiResponse<String> removeCartItem(Integer cartItemId){
-        Optional<CartItems> currItem=cartRepository.findById(cartItemId);
-
-        if(currItem.isEmpty()) {
-            return new ApiResponse<String>(
-                    404,
-                    "fail",
-                    "Item not found",
-                    null
-            );
-        }
-
-        cartRepository.deleteById(cartItemId);
-        return new ApiResponse<String>(
-                200,
-                "success",
-                "Cart Item Deleted Successfully",
-                "Deleted"
-        );
-
-    }
-
-    public ApiResponse<String> clearUserCart(Integer userId){
-        Integer rowsAffected=cartRepository.clearCartByUserId(userId);
-
-        if(rowsAffected==0){
-            return new ApiResponse<String>(
-                    200,
-                    "success",
-                    "Cart Already Empty",
-                    null
-            );
-        }
-
-        return new ApiResponse<String>(
-                200,
-                "success",
-                "Cart Cleared Successfully",
-                "Cleared"
-        );
     }
 }

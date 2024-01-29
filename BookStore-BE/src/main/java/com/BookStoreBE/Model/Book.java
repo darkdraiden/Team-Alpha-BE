@@ -33,17 +33,8 @@ public class Book {
     private float rating;
     private Integer reviewCnt;
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     private Timestamp createdAt;
 
-    private String url;
     public Book() {
     }
 
