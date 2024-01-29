@@ -12,9 +12,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static jakarta.servlet.DispatcherType.ERROR;
+import static jakarta.servlet.DispatcherType.FORWARD;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
 
     @Autowired
     private JwtAuthenticationEntryPoint point;
@@ -25,11 +29,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/user/login").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/user/signup").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/book").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/review").permitAll())
+//                .cors(cors -> cors.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
+                        .requestMatchers("/api/v1/user/login", "/api/v1/user/signup", "/api/v1/book/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/**").authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

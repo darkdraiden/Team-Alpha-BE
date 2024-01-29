@@ -1,7 +1,7 @@
 package com.BookStoreBE.Service;
 
 import com.BookStoreBE.Model.CartItems;
-import com.BookStoreBE.Model.User;
+import com.BookStoreBE.Model.Book;
 import com.BookStoreBE.Repository.BookRepository;
 import com.BookStoreBE.Repository.CartRepository;
 import com.BookStoreBE.utilityClasses.ApiResponse;
@@ -24,6 +24,11 @@ public class CartService {
     public ApiResponse<CartItems> createCartItem(CartItems cartItem){
         String finalResponse;
         if(cartItem.getCartItemId()==null){
+
+            Optional<Book> opBook=bookRepository.findById(cartItem.getBookId());
+            Float price=opBook.get().getMrp()*(100-opBook.get().getDiscount())/100;
+            cartItem.setPrice(price);
+            cartItem.setBookName(opBook.get().getTitle());
             cartRepository.save(cartItem);
             finalResponse="Item created in the cart";
             return new ApiResponse<CartItems>(
@@ -90,9 +95,11 @@ public class CartService {
         );
     }
 
-    public ApiResponse<List<CartItems>> getCartItems(Integer cartId){
+    public ApiResponse<List<CartItems>> getCartItems(Integer userId){
         //List<CartItems> allItems= new ArrayList<>();
-        List<CartItems> allItems= cartRepository.findCartItemsByIdCustom(cartId);
+        List<CartItems> allItems= cartRepository.findCartItemsByIdCustom(userId);
+
+
 
         return new ApiResponse<List<CartItems>>(
                 200,
