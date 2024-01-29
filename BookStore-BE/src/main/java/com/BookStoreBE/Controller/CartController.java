@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping(path="api/v1/cart")
 public class CartController {
@@ -47,6 +49,27 @@ public class CartController {
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse> getItems(@PathVariable Integer userId){
         ApiResponse<List<CartItems>> resultResponse=cartService.getCartItems(userId);
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
+    }
+
+    //Removes a cart item completely
+    @DeleteMapping("remove/{cartItemId}")
+    public ResponseEntity<ApiResponse<String>> removeItem(@PathVariable Integer cartItemId){
+        ApiResponse<String> resultResponse=cartService.removeCartItem(cartItemId);
+        return new ResponseEntity<>(
+                resultResponse,
+                HttpStatusCode.valueOf(resultResponse.getStatusCode())
+        );
+    }
+
+
+    //Clear the cart items
+    @DeleteMapping("clear/{userId}")
+    public ResponseEntity<ApiResponse<String>> clearCart(@PathVariable Integer userId){
+        ApiResponse<String> resultResponse=cartService.clearUserCart(userId);
         return new ResponseEntity<>(
                 resultResponse,
                 HttpStatusCode.valueOf(resultResponse.getStatusCode())

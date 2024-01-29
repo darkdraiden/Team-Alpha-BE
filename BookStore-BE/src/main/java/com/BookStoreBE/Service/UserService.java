@@ -7,13 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
@@ -65,6 +68,7 @@ public class UserService {
         }
         User currUser=userByEmail.get();
         // check if password is correct
+
 
         String encodePassword=currUser.getPassword();
 
@@ -148,4 +152,10 @@ public class UserService {
         );
     }
 
+    @Override
+    public User loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Optional<User> opUser=userRepository.findById(Integer.parseInt(userId));
+
+        return  opUser.get();
+    }
 }
