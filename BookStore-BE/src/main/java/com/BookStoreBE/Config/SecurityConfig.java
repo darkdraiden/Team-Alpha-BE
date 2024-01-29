@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     @Autowired
     private JwtAuthenticationEntryPoint point;
     @Autowired
@@ -30,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/user/login").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/user/signup").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/book").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/review").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/**").authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

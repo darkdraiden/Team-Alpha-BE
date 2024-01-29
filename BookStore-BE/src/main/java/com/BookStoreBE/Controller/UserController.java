@@ -46,7 +46,7 @@ public class UserController {
         String token = jwtHelper.generateToken(resultResponse.getData());
 
         return new ResponseEntity<>(
-                new JwtResponse(token),
+                new JwtResponse(resultResponse.getData(),token),
                 HttpStatusCode.valueOf(resultResponse.getStatusCode())
         );
     }
