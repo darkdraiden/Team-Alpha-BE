@@ -89,8 +89,11 @@ public class BookController {
 
 
     // will add Autherization later so only admin can add book
-    @PostMapping
-    public void addBook(@RequestBody Book book){
-        bookService.addBook(book);
+    @PostMapping("/{userId}")
+    public ResponseEntity<ApiResponse<String>> addBook(@RequestBody Book book,@PathVariable Integer userId){
+
+        ApiResponse<String> res=bookService.addBook(book,userId);
+
+        return new ResponseEntity<>(res,HttpStatusCode.valueOf(res.getStatusCode()));
     }
 }

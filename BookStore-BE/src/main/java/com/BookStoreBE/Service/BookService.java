@@ -2,7 +2,9 @@ package com.BookStoreBE.Service;
 
 
 import com.BookStoreBE.Model.Book;
+import com.BookStoreBE.Model.User;
 import com.BookStoreBE.Repository.BookRepository;
+import com.BookStoreBE.Repository.UserRepository;
 import com.BookStoreBE.utilityClasses.ApiResponse;
 import com.BookStoreBE.utilityClasses.GENRE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class BookService {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    UserRepository userRepository;
 
     public ApiResponse<List<Book>> getALlBooks(){
 
@@ -115,12 +119,25 @@ public class BookService {
                 allBooks
         );
     }
-    public void addBook(Book book){
+    public ApiResponse<String> addBook(Book book,Integer userId){
+
+        Optional<User> opUser=userRepository.findById(userId);
+
+        if(opUser.isEmpty()){
+            return new ApiResponse<String>(404,"fail","user not found",null);
+        }
+
+        if(opUser.get().getROLE()==null || !opUser.get().getROLE().equals("ADMIN")){
+            return new ApiResponse<String>(401,"fail","only admin can add books!",null);
+        }
 
         book.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         book.setReviewCnt(0);
         book.setRating(0);
         bookRepository.save(book);
+
+        return new ApiResponse<String>(200,"success","book added successfully!",null);
+
     }
 
 }

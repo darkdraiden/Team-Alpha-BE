@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 
         user.setPassword(encodedPassword);
-
+        user.setROLE("USER");
         userRepository.save(user);
 
         // user signed up successfully
