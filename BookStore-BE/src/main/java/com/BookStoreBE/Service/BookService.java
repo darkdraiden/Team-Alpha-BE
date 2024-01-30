@@ -6,6 +6,8 @@ import com.BookStoreBE.Repository.BookRepository;
 import com.BookStoreBE.utilityClasses.ApiResponse;
 import com.BookStoreBE.utilityClasses.GENRE;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -56,8 +58,8 @@ public class BookService {
     }
 
     public  ApiResponse<List<Book>> getTopSellingBooks(int limit){
-
-        List<Book> topSellingBooks = bookRepository.findTopSellingBooksWithLimit(limit);
+        Pageable pageable = PageRequest.of(0, limit);
+        List<Book> topSellingBooks = bookRepository.findTopSellingBooksWithLimit(pageable);
 
         return new ApiResponse<List<Book>>(
                 200,
@@ -68,8 +70,8 @@ public class BookService {
     }
 
     public  ApiResponse<List<Book>> getBooksByGenre(GENRE genre, int limit){
-
-        List<Book> allBooks = bookRepository.findAllByGenre(genre,limit);
+        Pageable pageable = PageRequest.of(0, limit);
+        List<Book> allBooks = bookRepository.findAllByGenre(genre,pageable);
 
         return new ApiResponse<List<Book>>(
                 200,
@@ -81,8 +83,8 @@ public class BookService {
 
 
     public  ApiResponse<List<Book>> getBooksWithMostDiscount(int limit){
-
-        List<Book> allBooks = bookRepository.findBooksWithMostDiscount(limit);
+        Pageable pageable = PageRequest.of(0, limit);
+        List<Book> allBooks = bookRepository.findBooksWithMostDiscount(pageable);
 
         return new ApiResponse<List<Book>>(
                 200,
@@ -93,8 +95,8 @@ public class BookService {
     }
 
     public  ApiResponse<List<Book>> getTopRatedBooks(int limit){
-
-        List<Book> allBooks = bookRepository.findTopRatedBooks(limit);
+        Pageable pageable = PageRequest.of(0, limit);
+        List<Book> allBooks = bookRepository.findTopRatedBooks(pageable);
 
         return new ApiResponse<List<Book>>(
                 200,
@@ -105,8 +107,8 @@ public class BookService {
     }
 
     public  ApiResponse<List<Book>> getNewArrivalsBooks(int limit){
-
-        List<Book> allBooks = bookRepository.findNewArrivals(limit);
+        Pageable pageable = PageRequest.of(0, limit);
+        List<Book> allBooks = bookRepository.findNewArrivals(pageable);
 
         return new ApiResponse<List<Book>>(
                 200,
