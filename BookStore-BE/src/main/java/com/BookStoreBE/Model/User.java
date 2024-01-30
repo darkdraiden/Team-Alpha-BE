@@ -12,9 +12,19 @@ import java.util.Collection;
 @Entity
 public class User implements UserDetails {
 
+    public String getROLE() {
+        return ROLE;
+    }
+
+    public void setROLE(String ROLE) {
+        this.ROLE = ROLE;
+    }
+
     @Id
     @GeneratedValue
     private int id;
+
+    private String ROLE;
     private String name;
     private String email;
     private String phone;
