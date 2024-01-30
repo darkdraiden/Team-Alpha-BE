@@ -140,4 +140,30 @@ public class BookService {
 
     }
 
+    public ApiResponse<String> updateBook(Book book,Integer userId){
+
+        Optional<User> opUser=userRepository.findById(userId);
+
+        if(opUser.isEmpty()){
+            return new ApiResponse<String>(404,"fail","user not found",null);
+        }
+
+        if(opUser.get().getROLE()==null || !opUser.get().getROLE().equals("ADMIN")){
+            return new ApiResponse<String>(401,"fail","only admin can update books!",null);
+        }
+
+        Integer bookId=book.getBookId();
+
+        Optional<Book> opBook = bookRepository.findById(bookId);
+
+        if(opBook.isEmpty()){
+            return new ApiResponse<String>(404,"fail","book not found",null);
+        }
+
+        bookRepository.save(book);
+
+        return new ApiResponse<String>(200,"success","book updated successfully!",null);
+
+    }
+
 }

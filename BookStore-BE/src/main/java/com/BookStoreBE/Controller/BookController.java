@@ -96,4 +96,11 @@ public class BookController {
 
         return new ResponseEntity<>(res,HttpStatusCode.valueOf(res.getStatusCode()));
     }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<ApiResponse<String>> updateBook(@RequestBody Book book, @PathVariable Integer userId){
+        ApiResponse<String> res=bookService.updateBook(book,userId);
+
+        return new ResponseEntity<>(res,HttpStatusCode.valueOf(res.getStatusCode()));
+    }
 }
